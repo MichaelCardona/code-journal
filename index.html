@@ -18,6 +18,42 @@
   <header>
   </header>
   <main>
+    <div data-view="entry-form" id="entries">
+      <div class="container">
+        <h1>New Entries</h1>
+        <form action="" method="GET" id="entry-form">
+          <div class="row">
+            <div class="column">
+              <img class="default-img" src="images/placeholder-image-square.jpg" alt="placeholder-image-square" required>
+            </div>
+            <div class="column">
+              <div class="group">
+                <label for="title">Title</label>
+                <div>
+                  <input type="text" id="Title" name="Title" required>
+                </div>
+              </div>
+              <div class="group">
+                <label for="imgURL">Photo URL</label>
+                <div>
+                  <input type="url" name="imgURL" id="imgURL" required>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="column-full">
+               <div class="group">
+                 <label for="Notes">Notes</label>
+               <div>
+                <textarea id="Notes" name="Notes"></textarea>
+               </div>
+              </div>
+             </div>
+            </div>
+        </form>
+      </div>
+    </div>
   </main>
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
