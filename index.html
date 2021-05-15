@@ -1,61 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Code Journal</title>
   <link rel="icon" href="images/favicon.ico">
-  <link
-    rel="stylesheet"
-    crossorigin="anonymous"
+  <link rel="stylesheet" crossorigin="anonymous"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
     integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==">
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
   <header>
   </header>
   <main>
-    <div data-view="entry-form" id="entries">
-      <div class="container">
-        <h1>New Entries</h1>
-        <form action="" method="GET" id="entry-form">
-          <div class="row">
-            <div class="column">
-              <img class="default-img" src="images/placeholder-image-square.jpg" alt="placeholder-image-square" required>
-            </div>
-            <div class="column">
-              <div class="group">
-                <label for="title">Title</label>
-                <div>
-                  <input type="text" id="Title" name="Title" required>
-                </div>
-              </div>
-              <div class="group">
-                <label for="imgURL">Photo URL</label>
-                <div>
-                  <input type="url" name="imgURL" id="imgURL" required>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="column-full">
-               <div class="group">
-                 <label for="Notes">Notes</label>
-               <div>
-                <textarea id="Notes" name="Notes"></textarea>
-               </div>
-              </div>
-             </div>
-            </div>
-        </form>
-      </div>
+    <div class="entry-form" data-view="entry-form">
+      <h1>New Entry</h1>
+      <img class="placeholder-image" src="images/placeholder-image-square.jpg" alt="Placeholder Image">
+      <form class="form">
+        <div class="label">
+          <label for="title">Title</label>
+        </div>
+        <div class="input">
+          <input name="title" id="title" type="text" required>
+        </div>
+
+        <div class="label">
+          <label for="url">Photo URL</label>
+        </div>
+        <div class="input">
+          <input name="url" id="url" type="url" required>
+        </div>
+        <div class="label">
+          <label for="notes">Notes</label>
+        </div>
+        <div class="input">
+          <input name="notes" id="notes" type="textarea">
+        </div>
+        <div class="input">
+          <input value="save" type="submit">
+        </div>
+      </form>
     </div>
-  </main>
+    </main>
+
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
 </body>
+
 </html>
