@@ -15,51 +15,36 @@
 </head>
 
 <body>
-
   <header>
     <div class="container">
-      <h2 class="journal-header">Code Journal</h2>
+      <div class="row">
+        <h3 class="journal-header">Code Journal</h3>
+        <nav>
+          <a href="#">
+            <h3 class="nav entries-nav">Entries</h3>
+          </a>
+        </nav>
+      </div>
     </div>
   </header>
   <main>
-    <div class="container" data-view="entries">
+    <div class="container entries-view" data-view="entries">
       <div class="row">
         <div class="half-row">
           <h1 class="page-title">Entries</h1>
         </div>
         <div class="half-row button-div">
-          <div class="button">New</div>
+          <a href="#">
+            <div class="new-entry button">New</div>
+          </a>
         </div>
       </div>
-      <ul class="entries">
-        <li class="entry">
-          <div class="row">
-            <div class="column-half">
-              <img class="entry-image" src="images/placeholder-image-square.jpg" alt="Entry Image">
-            </div>
-            <div class="column-half">
-              <h2 class="entry-title">hello</h2>
-                <p class="entry-notes">Hi</p>
-            </div>
-          </div>
-        </li>
-        <li class="entry">
-          <div class="row">
-            <div class="column-half">
-              <img class="entry-image" src="images/placeholder-image-square.jpg" alt="Entry Image">
-            </div>
-            <div class="column-half">
-              <h2 class="entry-title">byebye</h2>
-                <p class="entry-notes">bye</p>
-            </div>
-          </div>
-        </li>
-      </ul>
+      <ul class="entries"></ul>
     </div>
 
-    <div class="container" data-view="entry-form">
+    <div class="container entry-form-view hidden" data-view="entry-form">
       <form class="form">
-        <h1 class="entry-title">New Entry</h1>
+        <h1 class="page-title">New Entry</h1>
         <div class="row">
           <div class="column-half">
             <img class="entry-image" src="images/placeholder-image-square.jpg" alt="Placeholder Image">
@@ -100,6 +85,7 @@
         </div>
       </form>
     </div>
+
   </main>
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
