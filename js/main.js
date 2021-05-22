@@ -15,6 +15,9 @@ function clickSubmit(event) {
   data.nextEntryId++;
   data.entries.unshift(entry);
   placeholderImage.setAttribute('src', 'images/placeholder-image-square.jpg');
+  var renderedEntry = renderEntry(entry);
+  entryList.prepend(renderedEntry);
+  viewEntries();
   form.reset();
 }
 
@@ -46,7 +49,7 @@ function renderEntry(entry) {
   secondColumnHalf.append(entryTitle);
 
   var entryNotes = document.createElement('p');
-  entryNotes.className = 'entry-note';
+  entryNotes.className = 'entry-notes';
   entryNotes.textContent = entry.notes;
   secondColumnHalf.append(entryNotes);
 
@@ -54,36 +57,45 @@ function renderEntry(entry) {
 }
 
 function DOMContentLoaded(event) {
-  var entries = document.querySelector('.entries');
   for (var i = 0; i < data.entries.length; i++) {
     var renderedEntry = renderEntry(data.entries[i]);
-    entries.append(renderedEntry);
+    entryList.append(renderedEntry);
   }
 }
 
-function clickNew(event) {
-  entryForm.className = 'container entry-form-view';
-  entries.className = 'container entries-view hidden';
+function createNewEntry(event) {
+  entryForm.className = 'container entry-form';
+  entries.className = 'container entries hidden';
+  data.view = 'entry-form';
 }
 
-function clickEntriesNav(event) {
-  entryForm.className = 'container entry-form-view hidden';
-  entries.className = 'container entries-view';
+function viewEntries(event) {
+  entryForm.className = 'container entry-form hidden';
+  entries.className = 'container entries';
+  data.view = 'entries';
 }
+
+var entryForm = document.querySelector('.entry-form');
+var entries = document.querySelector('.entries');
+
+var entryList = document.querySelector('.entry-list');
+document.addEventListener('DOMContentLoaded', DOMContentLoaded);
+
+var entriesNav = document.querySelector('.entries-nav');
+entriesNav.addEventListener('click', viewEntries);
+
+var newButton = document.querySelector('.new-button');
+newButton.addEventListener('click', createNewEntry);
+
+var form = document.querySelector('.form');
+form.addEventListener('submit', clickSubmit);
 
 var inputPhotoUrl = document.querySelector('.input-photo-url');
 var placeholderImage = document.querySelector('.entry-image');
 inputPhotoUrl.addEventListener('input', updatePhoto);
 
-var form = document.querySelector('.form');
-form.addEventListener('submit', clickSubmit);
-
-document.addEventListener('DOMContentLoaded', DOMContentLoaded);
-
-var entryForm = document.querySelector('.entry-form-view');
-var entries = document.querySelector('.entries-view');
-var newButton = document.querySelector('.new-entry');
-newButton.addEventListener('click', clickNew);
-
-var entriesNav = document.querySelector('.entries-nav');
-entriesNav.addEventListener('click', clickEntriesNav);
+if (data.view === 'entry-form') {
+  createNewEntry();
+} else {
+  viewEntries();
+}
