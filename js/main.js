@@ -5,29 +5,40 @@ function updatePhoto(event) {
   placeholderImage.setAttribute('src', photoUrl);
 }
 
-function clickSubmit(event) {
+function clickSave(event) {
   event.preventDefault();
-  var entry = {};
-  entry.title = form.elements.title.value;
-  entry.photoUrl = form.elements.photoUrl.value;
-  entry.notes = form.elements.notes.value;
-  entry.entryId = data.nextEntryId;
-  data.nextEntryId++;
-  data.entries.unshift(entry);
+  if (data.editing === null) {
+    var entryObject = {};
+    entryObject.entryId = data.nextEntryId;
+  } else {
+    var entryListElement = data.editing;
+    entryObject = getEntryObject(entryListElement);
+  }
+  entryObject.title = form.elements.title.value;
+  entryObject.photoUrl = form.elements.photoUrl.value;
+  entryObject.notes = form.elements.notes.value;
   placeholderImage.setAttribute('src', 'images/placeholder-image-square.jpg');
-  var renderedEntry = renderEntry(entry);
-  entryList.prepend(renderedEntry);
+  var renderedEntry = renderEntry(entryObject);
+
+  if (data.editing === null) {
+    entryList.prepend(renderedEntry);
+    data.entries.unshift(entryObject);
+    data.nextEntryId++;
+  } else {
+    entryListElement.replaceWith(renderedEntry);
+  }
   viewEntries();
   form.reset();
+  data.editing = null;
 }
 
 function renderEntry(entry) {
-  var entryItem = document.createElement('li');
-  entryItem.className = 'entry';
+  var entryListElement = document.createElement('li');
+  entryListElement.className = 'entry';
 
   var entryRow = document.createElement('div');
   entryRow.className = 'row';
-  entryItem.append(entryRow);
+  entryListElement.append(entryRow);
 
   var leftColumnHalf = document.createElement('div');
   leftColumnHalf.className = 'column-half';
@@ -61,7 +72,7 @@ function renderEntry(entry) {
   entryTitleLeftHalf.append(entryTitle);
 
   var editIcon = document.createElement('i');
-  editIcon.className = 'fas fa-edit';
+  editIcon.className = 'fas fa-edit edit-icon';
   entryTitleRightHalf.append(editIcon);
 
   var entryNotes = document.createElement('p');
@@ -69,8 +80,8 @@ function renderEntry(entry) {
   entryNotes.textContent = entry.notes;
   rightColumnHalf.append(entryNotes);
 
-  entryItem.setAttribute('data-entry-id', entry.entryId);
-  return entryItem;
+  entryListElement.setAttribute('data-entry-id', entry.entryId);
+  return entryListElement;
 }
 
 function DOMContentLoaded(event) {
@@ -80,7 +91,7 @@ function DOMContentLoaded(event) {
   }
 }
 
-function createNewEntry(event) {
+function viewEntryForm(event) {
   entryForm.className = 'container entry-form';
   entries.className = 'container entries hidden';
   data.view = 'entry-form';
@@ -96,9 +107,25 @@ function editEntry(event) {
   if (event.target.tagName !== 'I') {
     return;
   }
-  createNewEntry();
-  var entryItem = event.target.closest('li');
-  data.editing = entryItem;
+  viewEntryForm();
+  var entryListElement = event.target.closest('li');
+  data.editing = entryListElement;
+  var entryObject = getEntryObject(entryListElement);
+
+  inputTitle.value = entryObject.title;
+  inputPhotoUrl.value = entryObject.photoUrl;
+  placeholderImage.setAttribute('src', entryObject.photoUrl);
+  inputNotes.value = entryObject.notes;
+}
+
+function getEntryObject(entryListElement) {
+  var entryId = parseInt(entryListElement.getAttribute('data-entry-id'));
+  for (var i = 0; i < data.entries.length; i++) {
+    if (entryId === data.entries[i].entryId) {
+      var entryObject = data.entries[i];
+      return entryObject;
+    }
+  }
 }
 
 var entryForm = document.querySelector('.entry-form');
@@ -111,10 +138,13 @@ var entriesNav = document.querySelector('.entries-nav');
 entriesNav.addEventListener('click', viewEntries);
 
 var newButton = document.querySelector('.new-button');
-newButton.addEventListener('click', createNewEntry);
+newButton.addEventListener('click', viewEntryForm);
 
 var form = document.querySelector('.form');
-form.addEventListener('submit', clickSubmit);
+form.addEventListener('submit', clickSave);
+
+var inputTitle = document.querySelector('.input-title');
+var inputNotes = document.querySelector('.input-notes');
 
 var inputPhotoUrl = document.querySelector('.input-photo-url');
 var placeholderImage = document.querySelector('.entry-image');
@@ -123,7 +153,7 @@ inputPhotoUrl.addEventListener('input', updatePhoto);
 entryList.addEventListener('click', editEntry);
 
 if (data.view === 'entry-form') {
-  createNewEntry();
+  viewEntryForm();
 } else {
   viewEntries();
 }
