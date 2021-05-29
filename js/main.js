@@ -17,7 +17,6 @@ function clickSave(event) {
   entryObject.title = form.elements.title.value;
   entryObject.photoUrl = form.elements.photoUrl.value;
   entryObject.notes = form.elements.notes.value;
-  placeholderImage.setAttribute('src', 'images/placeholder-image-square.jpg');
   var renderedEntry = renderEntry(entryObject);
 
   if (data.editing === null) {
@@ -28,8 +27,6 @@ function clickSave(event) {
     entryListElement.replaceWith(renderedEntry);
   }
   viewEntries();
-  form.reset();
-  data.editing = null;
 }
 
 function renderEntry(entry) {
@@ -102,6 +99,13 @@ function viewEntries(event) {
   entries.className = 'container entries';
   data.view = 'entries';
   deleteButton.className = 'delete-div hidden';
+  data.editing = null;
+}
+
+function createEntry(event) {
+  form.reset();
+  placeholderImage.setAttribute('src', 'images/placeholder-image-square.jpg');
+  viewEntryForm();
 }
 
 function editEntry(event) {
@@ -109,7 +113,7 @@ function editEntry(event) {
     return;
   }
   viewEntryForm();
-  deleteButton.className = 'delete-div';
+  deleteButton.className = 'delete-button';
 
   var entryListElement = event.target.closest('li');
   data.editing = entryListElement;
@@ -122,9 +126,9 @@ function editEntry(event) {
 }
 
 function getEntryObject(entryListElement) {
-  var entryId = parseInt(entryListElement.getAttribute('data-entry-id'));
+  var entryId = entryListElement.getAttribute('data-entry-id');
   for (var i = 0; i < data.entries.length; i++) {
-    if (entryId === data.entries[i].entryId) {
+    if (entryId === data.entries[i].entryId.toString()) {
       var entryObject = data.entries[i];
       return entryObject;
     }
@@ -133,10 +137,12 @@ function getEntryObject(entryListElement) {
 
 function clickDelete(event) {
   deletePopUp.className = 'delete-confirmation-div';
+  overlay.className = 'overlay';
 }
 
 function cancelDelete(event) {
   deletePopUp.className = 'delete-confirmation-div hidden';
+  overlay.className = 'overlay hidden';
 }
 
 function confirmDelete(event) {
@@ -150,10 +156,12 @@ function confirmDelete(event) {
     }
   }
   for (i = 0; i < data.entries.length; i++) {
-    if (data.entries[i].entryId === entryId) {
+    if (entryId === data.entries[i].entryId.toString()) {
       data.entries.splice(i, 1);
     }
   }
+  cancelDelete();
+  viewEntries();
 }
 
 var entryForm = document.querySelector('.entry-form');
@@ -166,7 +174,7 @@ var entriesNav = document.querySelector('.entries-nav');
 entriesNav.addEventListener('click', viewEntries);
 
 var newButton = document.querySelector('.new-button');
-newButton.addEventListener('click', viewEntryForm);
+newButton.addEventListener('click', createEntry);
 
 var form = document.querySelector('.form');
 form.addEventListener('submit', clickSave);
@@ -181,7 +189,8 @@ inputPhotoUrl.addEventListener('input', updatePhoto);
 entryList.addEventListener('click', editEntry);
 
 var deletePopUp = document.querySelector('.delete-confirmation-div');
-var deleteButton = document.querySelector('.delete-button-div');
+var overlay = document.querySelector('.overlay');
+var deleteButton = document.querySelector('.delete-button');
 deleteButton.addEventListener('click', clickDelete);
 
 var cancelDeleteButton = document.querySelector('.cancel');
